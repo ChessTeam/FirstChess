@@ -1,0 +1,44 @@
+int pawn(int board[][8], int inputCol, int inputRow, int outputCol, int outputRow){
+	int side = board[inputRow][inputCol]<7? 0:1; 		//set to 0 if black, 1 if white
+	int empty = board[outputRow][outputCol];		//piece the output is
+	if(empty == 0) return -1;
+	if(inputRow == outputRow) return -1;			//check if the pawn is even moving
+	int dy = abs(outputRow - inputRow);			//vertical distance
+	int dx = abs(outputCol - inputCol);			//horizontal distance
+	if(dx > 1) return -1;					//horizontal distance cant be more than 1
+	if(side == 0){						//black side implementation
+		if(inputRow > outputRow) return -1;		//cant move backwards
+		if(dx == 0){					//not attacking checks
+			if(inputRow == 1){			//first move
+				if(dy > 2) return -1;		//distance moved cant be more than 2
+				if(empty != 0) return -1;	//check if the spot is empty
+			}
+			else{					//not first move
+				if(dy > 1) return -1;		//distance moved cant be more than 1
+				if(empty != 0) return -1;	//check if the spot is empty
+			}
+		}
+		else{						//attacking checks
+			if(dy > 1) return -1;			//cant move further than 1 attacking
+			if(empty < 7) return -1;		//cant take same colored piece
+		}
+	}
+	if(side == 1){
+		if(inputRow < outputRow) return -1;
+		if(dx == 0){
+			if(inputRow == 6){
+				if(dy > 2) return -1;
+				if(empty != 0) return -1;
+			}
+			else{
+				if(dy > 1) return -1;
+				if(empty != 0) return -1;	
+			}
+		}
+		else{
+			if(dy > 1) return -1;
+			if(empty > 6) return -1;
+		}
+	}
+	return 1;
+}
